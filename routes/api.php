@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,4 @@ Route::get('/profile', [AuthController::class, 'getMyProfile'])->middleware('aut
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 
+Route::get('/movies',[MovieController::class,'index']);
