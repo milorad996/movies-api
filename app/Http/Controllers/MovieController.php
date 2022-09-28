@@ -15,6 +15,7 @@ class MovieController extends Controller
     public function index()
     {
         $movies = Movie::all();
+        
 
         return response()->json($movies);
     }
@@ -48,7 +49,7 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        //
+        return response()->json($movie);
     }
 
     /**
