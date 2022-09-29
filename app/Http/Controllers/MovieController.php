@@ -12,9 +12,11 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $movies = Movie::all();
+       
+        $per_page = $request->query('per_page',10);
+        $movies = Movie::paginate($per_page);
         
 
         return response()->json($movies);
