@@ -29,3 +29,4 @@ Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 
 Route::get('/movies',[MovieController::class,'index']);
 Route::get('/movies/{movie}',[MovieController::class, 'show']);
+Route::post('/movies',[MovieController::class,'store']);
