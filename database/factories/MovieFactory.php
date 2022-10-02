@@ -24,7 +24,6 @@ class MovieFactory extends Factory
             'title' => $this->faker->title(),
             'description' => $this->faker->text(200),
             'image' => $this->faker->imageUrl(400,300),
-            'genre' => $this->faker->randomElement(['Action','Adventure','Comedy','Drama','Fantasy','Horror','Musicals','Mystery','Romance','Thriller'])
         ];
     }
 }
