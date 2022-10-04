@@ -49,14 +49,14 @@ class LikeController extends Controller
     
         $this->like_service->createLike($data,$movieId);
         
-         $movies = Movie::with('likeDislike','genre')->get();
+         $movie = Movie::with('likeDislike','genre')->find($movieId);
          
          $likes = Like::with('movie')->where('like','=', 1)->where(['movie_id' => $movieId])->count();
         
         
 
         return response()->json([
-            "movies" => $movies,
+            "movie" => $movie,
             "likes" => $likes
         ]);
 

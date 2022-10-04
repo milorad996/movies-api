@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
@@ -38,3 +39,5 @@ Route::get('/movies-filter',[MovieController::class,'filter']);
 Route::get('/movies-likes',[LikeController::class,'index']);
 Route::post('/movies/{id}/likes',[LikeController::class,'createLike']);
 Route::post('/movies/{id}/dislikes',[LikeController::class,'createDislike']);
+
+Route::post('/movies/{id}/comments',[CommentController::class,'store']);

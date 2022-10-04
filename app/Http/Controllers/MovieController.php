@@ -104,7 +104,7 @@ class MovieController extends Controller
            $movie->save();
            
         }
-        $movie = Movie::with('genre','likeDislike')->where('id', $movie->id)->first();
+        $movie = Movie::with('genre','likeDislike','comments')->where('id', $movie->id)->first();
         
         return response()->json($movie);
     }
