@@ -27,7 +27,7 @@ class MovieController extends Controller
     {
        
         $per_page = $request->query('per_page',10);
-        $movies = Movie::with('genre')->paginate($per_page);
+        $movies = Movie::with('genre','likeDislike')->paginate($per_page);
         
 
         return response()->json($movies);
@@ -59,14 +59,16 @@ class MovieController extends Controller
 
     public function filter(Request $request){
         $filterTerm = $request->query('genre');
-
-        $genre = Genre::filterByGenre($filterTerm);
+        $per_page = $request->query('per_page',10);
+        
+        $genre = Genre::filterByGenre($filterTerm)->paginate($per_page);
         
         $count = $genre->count();
     
         return response()->json([
             "genre" => $genre,
             "count" => $count,
+        
             
         ]);
     }
@@ -94,9 +96,16 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function show(Movie $movie)
-    {
-        $movie = Movie::with('genre')->where('id', $movie->id)->first();
+    public function show(Request $request,Movie $movie)
+    {   
+        $url = $request->url();
+        if(!!$url){
+           $movie->review = $movie->review + 1;
+           $movie->save();
+           
+        }
+        $movie = Movie::with('genre','likeDislike')->where('id', $movie->id)->first();
+        
         return response()->json($movie);
     }
 

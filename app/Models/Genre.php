@@ -20,7 +20,7 @@ class Genre extends Model
 
 
     public static function filterByGenre($term){
-        return self::where('genre','like','%'. $term . '%')->with('movies')->get();
+        return self::where('genre','like','%'. $term . '%')->with('movies');
      }
 
 

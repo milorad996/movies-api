@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,3 +34,7 @@ Route::get('/movies/{movie}',[MovieController::class, 'show']);
 Route::post('/movies',[MovieController::class,'store']);
 Route::get('/movies-search',[MovieController::class,'search']);
 Route::get('/movies-filter',[MovieController::class,'filter']);
+
+Route::get('/movies-likes',[LikeController::class,'index']);
+Route::post('/movies/{id}/likes',[LikeController::class,'createLike']);
+Route::post('/movies/{id}/dislikes',[LikeController::class,'createDislike']);
