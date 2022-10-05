@@ -30,8 +30,12 @@ class Movie extends Model
        return self::where('title','like','%'. $term . '%')->with('genre');
     }
 
-    public function likeDislike() {
+    public function likes() {
         return $this->hasMany(Like::class);
+    }
+
+    public function dislikes(){
+        return $this->hasMany(Dislike::class);
     }
 
     public function comments() {

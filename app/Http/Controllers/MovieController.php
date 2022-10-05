@@ -27,7 +27,7 @@ class MovieController extends Controller
     {
        
         $per_page = $request->query('per_page',10);
-        $movies = Movie::with('genre','likeDislike')->paginate($per_page);
+        $movies = Movie::with('genre','likes','dislikes')->paginate($per_page);
         
 
         return response()->json($movies);
@@ -104,7 +104,7 @@ class MovieController extends Controller
            $movie->save();
            
         }
-        $movie = Movie::with('genre','likeDislike','comments')->where('id', $movie->id)->first();
+        $movie = Movie::with('genre','likes','dislikes','comments')->where('id', $movie->id)->first();
         
         return response()->json($movie);
     }

@@ -6,6 +6,7 @@ use App\Models\Like;
 use App\Models\Likes\Services\LikeService;
 use App\Models\Movie;
 use App\Models\User;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class LikeController extends Controller
     public function index()
     {
         $movie = new Movie();
-        $movies = $movie->with('likeDislike')->whereJsonContains('like','like')->count();
+        $movies = $movie->with('likes')->whereJsonContains('like','like')->count();
 
         foreach($movies as $movie){
            $movie;
@@ -49,45 +50,32 @@ class LikeController extends Controller
     
         $this->like_service->createLike($data,$movieId);
         
-         $movie = Movie::with('likeDislike','genre')->find($movieId);
+         //$movie = Movie::with(['likeDislike.like'],'genre')->find($movieId);
          
-         $likes = Like::with('movie')->where('like','=', 1)->where(['movie_id' => $movieId])->count();
-        
-        
-
-        return response()->json([
-            "movie" => $movie,
-            "likes" => $likes
-        ]);
-
-
-        
-
-
-    }
-    public function createDislike(Request $request,$movieId)
-    {
-
-        $data = $request->all();
-        $this->like_service->createDislike($data,$movieId);
-        
-        $movie = Movie::with('likeDislike','genre')->find($movieId);
-        
-                 
+        //$likes = Like::with('movie')->get();
          
-        $dislikes = Like::with('movie')->where('dislike','=', 1)->where(['movie_id' => $movieId])->count();
+        $movies = Movie::with('genre','likes','dislikes')->get();
+        //    $mov = [];
+        //    foreach ($movies as $movie) {
+        //        foreach($movie->likeDislike as $like){
+        //              $mov[] = $like;
+        //        }
+        //         //$mov[] = $movie->likeDislike[0];
+                
 
+        //     }
+        return response()->json($movies);
+    }
+        
 
-        return response()->json([
-            "dislikes" => $dislikes,
-            "movie" => $movie
-        ]);
+        //return response()->json($movie);
 
 
         
 
 
-    }
+    
+    
 
     /**
      * Display the specified resource.

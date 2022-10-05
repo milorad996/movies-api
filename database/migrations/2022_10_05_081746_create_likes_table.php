@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('movie_id')->constrained()->onDelete('cascade');
             $table->integer('like')->default(0);
-            $table->integer('dislike')->default(0);
             $table->timestamps();
         });
     }
