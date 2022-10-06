@@ -9,6 +9,7 @@ use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use App\Models\Movies\Services\MovieService;
+use ArrayObject;
 
 class MovieController extends Controller
 {
@@ -33,6 +34,16 @@ class MovieController extends Controller
         return response()->json($movies);
        
         
+    }
+    public function popular(){
+        $movies = Movie::with('genre','likes','dislikes')->paginate(10);
+        
+        
+        $newMovies = $movies->sortBy('likes', SORT_REGULAR, true );
+
+        
+    
+        return response()->json($newMovies->values());
     }
 
     /**
@@ -63,14 +74,8 @@ class MovieController extends Controller
         
         $genre = Genre::filterByGenre($filterTerm)->paginate($per_page);
         
-        $count = $genre->count();
-    
-        return response()->json([
-            "genre" => $genre,
-            "count" => $count,
         
-            
-        ]);
+        return response()->json($genre);
     }
        
     /**
