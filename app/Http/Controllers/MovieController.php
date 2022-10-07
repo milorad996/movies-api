@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use App\Models\Movies\Services\MovieService;
 use ArrayObject;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class MovieController extends Controller
 {
@@ -44,6 +45,27 @@ class MovieController extends Controller
         
     
         return response()->json($newMovies->values());
+    }
+
+    public function movieByGenre(Request $request){
+
+        $term = $request->query('genre');
+        
+        $newMovies = [];
+        $movies = Movie::with('genre')->get();
+    
+           foreach($movies as $movie){
+            if(strtoupper($movie->genre['genre'][0]) === strtoupper($term[0])){
+                $newMovies[] = $movie ;
+
+            
+           }
+        }
+           
+    
+
+        return response()->json(array_slice($newMovies, 0,10));
+    
     }
 
     /**

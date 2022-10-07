@@ -45,4 +45,4 @@ Route::post('/movies/{id}/comments',[CommentController::class,'store']);
 Route::get('/comments/{id}',[CommentController::class,'index']);
 
 Route::get('/popular',[MovieController::class,'popular']);
-Route::get('/movies/movies/comments/{id}',[CommentController::class,'index']);
+Route::get('/genres',[MovieController::class,'movieByGenre']);
