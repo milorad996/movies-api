@@ -92,16 +92,17 @@ class MovieController extends Controller
 
     public function filter(Request $request){
          $filterTerm = $request->query('genre');
-       // $per_page = $request->query('per_page',10);
+         $per_page = $request->query('per_page',10);
         
-       // $genre = Genre::filterByGenre($filterTerm)->paginate($per_page);
        
-        $movies = Movie::with('genre','likes','dislikes','watchlists')->whereHas('genre', function ($genre) use ($filterTerm) {
-                $genre->where('genre','like','%'. $filterTerm . '%');
-            });
+       
+        $movies = Movie::filterByGenre($filterTerm)->paginate($per_page);
+        $count = $movies->count();
         
-        
-        return response()->json($movies->get());
+        return response()->json([
+            "movies" => $movies,
+            "count" => $count
+        ]);
     }
        
     /**

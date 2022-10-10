@@ -46,6 +46,12 @@ class Movie extends Model
         return $this->hasMany(WatchList::class);
     }
 
+    public static function filterByGenre($filterTerm){
+        return self::with('genre','likes','dislikes','watchlists')->whereHas('genre', function ($genre) use ($filterTerm) {
+            $genre->where('genre','like','%'. $filterTerm . '%');
+        });
+    }
+
    
 
     
