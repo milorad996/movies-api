@@ -25,15 +25,13 @@ class LikeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($movieId)
     {
-        $movie = new Movie();
-        $movies = $movie->with('likes')->whereJsonContains('like','like')->count();
+        $userId = Auth::user()->id;
 
-        foreach($movies as $movie){
-           $movie;
-        }
-        return response()->json($movies);
+
+        $movie = Like::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'like' => true])->get();
+        return response()->json($movie->isEmpty());
         
     }
 
@@ -50,20 +48,9 @@ class LikeController extends Controller
     
         $this->like_service->createLike($data,$movieId);
         
-         //$movie = Movie::with(['likeDislike.like'],'genre')->find($movieId);
          
-        //$likes = Like::with('movie')->get();
-         
-        $movies = Movie::with('genre','likes','dislikes')->get();
-        //    $mov = [];
-        //    foreach ($movies as $movie) {
-        //        foreach($movie->likeDislike as $like){
-        //              $mov[] = $like;
-        //        }
-        //         //$mov[] = $movie->likeDislike[0];
-                
-
-        //     }
+        $movies = Movie::with('genre','likes','dislikes','watchlists')->get();
+        
         return response()->json($movies);
     }
         

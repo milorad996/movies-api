@@ -15,26 +15,10 @@ class LikeService {
     public function createLike($data,$movieId){
 
         
-        //$id = Auth::user()->id;
+        $userId = Auth::user()->id;
 
         
-        // $user = new User();
-        // $user = User::where(['id' => $id])->with('likeDislike')->get();
-        //$movie = Movie::where(['id' => $movieId]);
-        // $movie = Movie::where(['id' => $movieId])->with('likeDislike')->get();
-        //$like = Like::where(['user_id' => $id])->get();
-
-
-
-
-        //$movie = Movie::find($movieId)->likeDislike('like','dislike')->first();
-        //$movie->likeDislike()->get();
-
-        // return response()->json([
-        //     "user" => $user[0]->first_name,
-        //     "like" => $like[0]->like,
-        //     "movie" => $movie[0]->like
-        // ]);
+        
 
 
 
@@ -42,7 +26,15 @@ class LikeService {
         $newLike->like = $data['likes']['like'];
         $newLike->user_id = Auth::user()->id;
         $newLike->movie_id = $movieId;
-        $newLike->save();
+        
+        $like = Like::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'like' => true])->get();
+        $likes = Like::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'like' => true]);
+        if($like->isEmpty()){
+            $newLike->save();
+
+        }else{
+            $likes->delete();
+        }
         
         
         

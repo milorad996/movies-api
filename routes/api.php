@@ -39,7 +39,7 @@ Route::post('/movies',[MovieController::class,'store']);
 Route::get('/movies-search',[MovieController::class,'search']);
 Route::get('/movies-filter',[MovieController::class,'filter']);
 
-Route::get('/movies-likes',[LikeController::class,'index']);
+Route::get('/movies-likes/{id}',[LikeController::class,'index']);
 Route::post('/movies/{id}/likes',[LikeController::class,'createLike']);
 Route::post('/movies/{id}/dislikes',[DislikeController::class,'createDislike']);
 

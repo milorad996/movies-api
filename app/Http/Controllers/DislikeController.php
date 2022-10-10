@@ -41,7 +41,7 @@ class DislikeController extends Controller
     
         $this->dislike_service->createDislike($data,$movieId);
           
-        $movies = Movie::with('genre','likes','dislikes')->get();
+        $movies = Movie::with('genre','likes','dislikes','watchlists')->get();
         
         return response()->json($movies);
     }
