@@ -29,7 +29,7 @@ class MovieController extends Controller
     {
        
         $per_page = $request->query('per_page',10);
-        $movies = Movie::with('genre','likes','dislikes')->paginate($per_page);
+        $movies = Movie::with('genre','likes','dislikes','watchlists')->paginate($per_page);
         
 
         return response()->json($movies);
@@ -91,13 +91,17 @@ class MovieController extends Controller
     }
 
     public function filter(Request $request){
-        $filterTerm = $request->query('genre');
-        $per_page = $request->query('per_page',10);
+         $filterTerm = $request->query('genre');
+       // $per_page = $request->query('per_page',10);
         
-        $genre = Genre::filterByGenre($filterTerm)->paginate($per_page);
+       // $genre = Genre::filterByGenre($filterTerm)->paginate($per_page);
+       
+        $movies = Movie::with('genre','likes','dislikes','watchlists')->whereHas('genre', function ($genre) use ($filterTerm) {
+                $genre->where('genre','like','%'. $filterTerm . '%');
+            });
         
         
-        return response()->json($genre);
+        return response()->json($movies->get());
     }
        
     /**
@@ -131,7 +135,7 @@ class MovieController extends Controller
            $movie->save();
            
         }
-        $movie = Movie::with('genre','likes','dislikes','comments')->where('id', $movie->id)->first();
+        $movie = Movie::with('genre','likes','dislikes','comments','watchlists')->where('id', $movie->id)->first();
         
         return response()->json($movie);
     }

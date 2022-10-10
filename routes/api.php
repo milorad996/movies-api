@@ -6,8 +6,10 @@ use App\Http\Controllers\DislikeController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\WatchListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use League\CommonMark\Node\NodeWalkerEvent;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +48,8 @@ Route::get('/comments/{id}',[CommentController::class,'index']);
 
 Route::get('/popular',[MovieController::class,'popular']);
 Route::get('/genres',[MovieController::class,'movieByGenre']);
+
+Route::get('/lists',[WatchListController::class, 'index']);
+Route::put('/lists/{id}',[WatchListController::class,'watched']);
+Route::post('/lists-movies/{id}',[WatchListController::class,'addToWatchList']);
+Route::delete('/lists-remove/{id}',[WatchListController::class,'removeFromWatchlist']);

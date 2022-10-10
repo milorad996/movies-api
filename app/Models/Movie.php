@@ -42,6 +42,10 @@ class Movie extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function watchlists(){
+        return $this->hasMany(WatchList::class);
+    }
+
    
 
     

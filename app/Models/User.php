@@ -61,4 +61,7 @@ class User extends Authenticatable implements JWTSubject
     public function dislikes() {
         return $this->hasMany(Dislike::class);
     }
+    public function watchlists(){
+        return $this->hasMany(WatchList::class);
+    }
 }
