@@ -27,4 +27,8 @@ class Dislike extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public static function getDislikes($userId,$movieId){
+        return self::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'dislike' => true]);
+    }
 }

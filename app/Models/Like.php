@@ -27,5 +27,9 @@ class Like extends Model
         return $this->belongsTo(User::class);
     }
 
+    public static function getLikes($userId,$movieId){
+        return self::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'like' => true]);
+    }
+
     
 }

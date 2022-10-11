@@ -27,8 +27,8 @@ class LikeService {
         $newLike->user_id = Auth::user()->id;
         $newLike->movie_id = $movieId;
         
-        $like = Like::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'like' => true])->get();
-        $likes = Like::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'like' => true]);
+        $like = Like::getLikes($userId,$movieId)->get();
+        $likes = Like::getLikes($userId,$movieId);
         if($like->isEmpty()){
             $newLike->save();
 

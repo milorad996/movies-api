@@ -22,5 +22,25 @@ class WatchList extends Model
         return $this->belongsTo(Movie::class);
     }
 
+    public static function getUniqueWatchlist($id){
+        return self::with('movie')->where(['user_id' => $id, 'onWatchlist' => true] )->get();
+    }
+
+    public static function getWatchlist($userId){
+        return self::with('movie')->where(['user_id' => $userId, 'onWatchlist' => true] )->get();
+    }
+
+    public static function deleteWatchlist($movieId,$userId){
+        return self::with('movie')->where(['movie_id' => $movieId ,'user_id' => $userId] )->delete();
+    }
+
+    public static function getWatchlistWithMovie($id){
+        return self::with('movie')->where(['id' => $id, 'watched' => true])->get();
+    }
+
+    public static function getWatchlistWithUserMovie($movieId,$id){
+        return self::with('movie')->where(['movie_id' => $movieId, 'onWatchlist' => true, 'user_id' => $id])->get();
+    }
+
 
 }

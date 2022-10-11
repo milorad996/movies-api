@@ -29,7 +29,7 @@ class MovieController extends Controller
     {
        
         $per_page = $request->query('per_page',10);
-        $movies = Movie::with('genre','likes','dislikes','watchlists')->paginate($per_page);
+        $movies = Movie::getMoviesWithPagination($per_page);
         
 
         return response()->json($movies);
@@ -37,7 +37,7 @@ class MovieController extends Controller
         
     }
     public function popular(){
-        $movies = Movie::with('genre','likes','dislikes')->paginate(10);
+        $movies = Movie::getPopularMovies();
         
         
         $newMovies = $movies->sortBy('likes', SORT_REGULAR, true );
@@ -49,34 +49,21 @@ class MovieController extends Controller
 
     public function movieByGenre(Request $request){
 
-        $term = $request->query('genre');
+        $filterTerm = $request->query('genre');
         
-        $newMovies = [];
-        $movies = Movie::with('genre')->get();
     
-           foreach($movies as $movie){
-            if(strtoupper($movie->genre['genre'][0]) === strtoupper($term[0])){
-                $newMovies[] = $movie ;
-
-            
-           }
-        }
+        $movies = Movie::getMoviesByGenre($filterTerm);
+    
+           
+        
            
     
 
-        return response()->json(array_slice($newMovies, 0,10));
+        return response()->json($movies->get());
     
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    
     public function search(Request $request){
           $term = $request->query('title');
           $per_page = $request->query('per_page',10);
@@ -105,12 +92,7 @@ class MovieController extends Controller
         ]);
     }
        
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         
@@ -122,12 +104,7 @@ class MovieController extends Controller
         return response()->json($movie->with('genre')->get()->last());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(Request $request,Movie $movie)
     {   
         $url = $request->url();
@@ -136,42 +113,11 @@ class MovieController extends Controller
            $movie->save();
            
         }
-        $movie = Movie::with('genre','likes','dislikes','comments','watchlists')->where('id', $movie->id)->first();
+        $movie = Movie::getMovieById($movie);
         
         return response()->json($movie);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Movie $movie)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Movie $movie)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Movie $movie)
-    {
-        //
-    }
+    
+    
 }

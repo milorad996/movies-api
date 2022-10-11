@@ -18,8 +18,10 @@ class DislikeService {
         $newDislike->user_id = Auth::user()->id;
         $newDislike->movie_id = $movieId;
 
-        $dislike = Dislike::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'dislike' => true])->get();
-        $dislikes = Dislike::with('user')->where(['user_id' => $userId, 'movie_id' => $movieId, 'dislike' => true]);
+        
+
+        $dislike = Dislike::getDislikes($userId,$movieId)->get();
+        $dislikes = Dislike::getDislikes($userId,$movieId);
         if($dislike->isEmpty()){
             $newDislike->save();
 

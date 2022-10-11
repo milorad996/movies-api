@@ -5,50 +5,39 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WatchListRequest;
 use App\Models\Movie;
 use App\Models\WatchList;
+use App\Models\Watchlists\Services\WatchListService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WatchListController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public WatchListService $watchlist_service;
+
+    public function __construct(WatchListService $watchlist_service)
+    {
+        $this->watchlist_service = $watchlist_service;
+    }
+    
     public function index()
     {
         $id = Auth::user()->id;
 
-        $lists = WatchList::with('movie')->where(['user_id' => $id, 'onWatchlist' => true] )->get();
+        $lists = WatchList::getUniqueWatchlist($id);
 
         return response()->json($lists);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function watched(WatchListRequest $request,$id)
     {
 
         $userId = Auth::user()->id;
         
+        $data = $request->all();
 
+        $this->watchlist_service->create($data,$id);
 
-        $watchlist = WatchList::find($id);
-        
-        $watch = WatchList::with('movie')->where(['id' => $id, 'watched' => true])->get();
-
-        $watchlist->user_id = Auth::user()->id;
-        $watchlist->watched = $request->watched;
-
-        if($watch->isEmpty()){
-            $watchlist->save();
-        }
-
-        $lists = WatchList::with('movie')->where(['user_id' => $userId, 'onWatchlist' => true] )->get();
+        $lists = WatchList::getWatchlist($userId);
 
 
         return response()->json($lists);
@@ -56,73 +45,27 @@ class WatchListController extends Controller
 
     public function addToWatchlist(WatchListRequest $request,$movieId){
 
+        $data = $request->all();
 
-        $id = Auth::user()->id;
-
-
-        $watchList = new WatchList();
-
-        $watchList->user_id = Auth::user()->id;
-        $watchList->movie_id = $movieId;
-        $watchList->onWatchlist = $request->onWatchlist;
-        $watch = WatchList::with('movie')->where(['movie_id' => $movieId, 'onWatchlist' => true, 'user_id' => $id])->get();
+        $this->watchlist_service->createWatchlist($data,$movieId);
         
 
-        if($watch->isEmpty()){
-            $watchList->save();
-
-        }
-
-        
-        
-
-
-        $lists = WatchList::with('movie')->where(['user_id' => $id, 'onWatchlist' => true] )->get();
+        $userId = Auth::user()->id;
+        $lists = WatchList::getWatchlist($userId);
 
         return response()->json($lists);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\WatchList  $watchList
-     * @return \Illuminate\Http\Response
-     */
+   
     public function removeFromWatchlist($movieId){
 
-        $id = Auth::user()->id;
+        $userId = Auth::user()->id;
 
-        WatchList::with('movie')->where(['movie_id' => $movieId ,'user_id' => $id] )->delete();
-        $lists = WatchList::with('movie')->where(['user_id' => $id, 'onWatchlist' => true] )->get();
+        WatchList::deleteWatchlist($movieId,$userId);
+        $lists = WatchList::getWatchlist($userId);
         return response()->json($lists);
     }
 
 
-    public function show(WatchList $watchList)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\WatchList  $watchList
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, WatchList $watchList)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\WatchList  $watchList
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(WatchList $watchList)
-    {
-        //
-    }
+    
 }

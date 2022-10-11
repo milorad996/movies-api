@@ -18,4 +18,12 @@ class Comment extends Model
     public function movie() {
         return $this->belongsTo(Movie::class);
     }
+
+    public static function getCommentsWithPagination($movieId,$per_page){
+        return self::where(['movie_id' => $movieId])->paginate($per_page);
+    }
+
+    public static function getComments($movieId){
+        return self::where(['movie_id' => $movieId])->get();
+    }
 }
