@@ -20,11 +20,7 @@ class MovieController extends Controller
     {
         $this->movie_service = $movie_service;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index(Request $request)
     {
        
@@ -101,7 +97,7 @@ class MovieController extends Controller
         $data = $request->all();
         $movie = $this->movie_service->create($data);
          
-        return response()->json($movie->with('genre')->get()->last());
+        return response()->json($movie->with('genre','likes','dislikes','watchlists')->get()->last());
     }
 
     

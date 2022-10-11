@@ -71,7 +71,7 @@ class Movie extends Model
     }
 
     public static function getMoviesWithPagination($per_page){
-        return self::with('genre','likes','dislikes','watchlists')->paginate($per_page);
+        return self::orderBy('created_at','desc')->with('genre','likes','dislikes','watchlists')->paginate($per_page);
     }
 
    
