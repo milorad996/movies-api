@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GenreRequest;
 use App\Http\Requests\MovieRequest;
+use App\Mail\MovieMail;
 use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use App\Models\Movies\Services\MovieService;
 use ArrayObject;
+use Doctrine\DBAL\Schema\View;
+use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Expr\Cast\Object_;
 
 class MovieController extends Controller
@@ -97,6 +100,13 @@ class MovieController extends Controller
         $movie = $this->movie_service->create($data);
          
         Movie::addAllToIndex();
+
+    
+    	Mail::to('a0e81d5f81-52b522@inbox.mailtrap.io')->send(new MovieMail($movie));
+    
+
+        
+
         return response()->json($movie->with('genre','likes','dislikes','watchlists')->get()->last());
     }
 
