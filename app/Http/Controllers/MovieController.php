@@ -15,7 +15,6 @@ use PhpParser\Node\Expr\Cast\Object_;
 class MovieController extends Controller
 {
     public MovieService $movie_service;
-
     public function __construct(MovieService $movie_service)
     {
         $this->movie_service = $movie_service;
@@ -97,6 +96,7 @@ class MovieController extends Controller
         $data = $request->all();
         $movie = $this->movie_service->create($data);
          
+        Movie::addAllToIndex();
         return response()->json($movie->with('genre','likes','dislikes','watchlists')->get()->last());
     }
 
@@ -112,6 +112,36 @@ class MovieController extends Controller
         $movie = Movie::getMovieById($movie);
         
         return response()->json($movie);
+    }
+
+    
+
+    public function elasticSearch(Request $request){
+
+        $term = $request->query('term');
+        $movie = Movie::addAllToIndex();
+        
+    
+        $movies = Movie::getMoviesByElasticsearch($term);
+        
+
+        foreach($movies as $movie){
+
+            $newMovies[] = Movie::getMovie($movie);
+            
+
+        
+            
+        }
+        $count = $movies->count();
+
+
+        
+        
+        return response()->json([
+            "movies" => $newMovies,
+            "count" => $count
+        ]);
     }
 
     

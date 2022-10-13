@@ -52,3 +52,5 @@ Route::get('/lists',[WatchListController::class, 'index']);
 Route::put('/lists/{id}',[WatchListController::class,'watched']);
 Route::post('/lists-movies/{id}',[WatchListController::class,'addToWatchList']);
 Route::delete('/lists-remove/{id}',[WatchListController::class,'removeFromWatchlist']);
+
+Route::get('/elastic-search',[MovieController::class,'elasticSearch']);

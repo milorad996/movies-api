@@ -11,7 +11,9 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^1.0",
+        "elasticquent/elasticquent": "dev-master"
+
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -64,4 +66,5 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true
+
 }
