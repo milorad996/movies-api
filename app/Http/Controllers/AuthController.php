@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Jobs\TestJob;
 use App\Models\User;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
@@ -11,18 +12,16 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // public User $user;
-    // public function __construct(User $user)
-    // {
-    //      $this->user = $user;
-    // }
+    
 
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
 
         $token = Auth::attempt($credentials);
-        if (!$token) {
+        if (!$token) { 
+            dispatch(new TestJob());
+
             return response()->json([
                 'message' => 'Invalid credentials'
             ], Response::HTTP_UNAUTHORIZED);

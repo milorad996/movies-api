@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
+use App\Mail\MovieMail;
 use App\Models\Comment;
 use App\Models\Comments\Services\CommentService;
 use App\Models\Like;
@@ -21,29 +22,29 @@ class CommentController extends Controller
     {
         $this->comment_service = $comment_service;
     }
-    
-    public function index(Request $request,$movieId)
+
+    public function index(Request $request, $movieId)
     {
 
-        $per_page = $request->query('per_page',5);
+        $per_page = $request->query('per_page', 5);
 
-        $comments = Comment::getCommentsWithPagination($movieId,$per_page);
+        $comments = Comment::getCommentsWithPagination($movieId, $per_page);
 
         return response()->json($comments);
     }
 
    
-    public function store(CommentRequest $request,$movieId)
+
+
+    public function store(CommentRequest $request, $movieId)
     {
 
         $data = $request->all();
-        $this->comment_service->create($data,$movieId);
+        $this->comment_service->create($data, $movieId);
 
         $comments = Comment::getComments($movieId);
 
 
         return response()->json($comments);
     }
-
-    
 }

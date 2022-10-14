@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GenreRequest;
 use App\Http\Requests\MovieRequest;
+use App\Jobs\TestJob;
 use App\Mail\MovieMail;
 use App\Models\Genre;
 use App\Models\Movie;
@@ -93,15 +94,17 @@ class MovieController extends Controller
     
     public function store(Request $request)
     {
-        
-        
+
+
+       
 
         $data = $request->all();
-        $movie = $this->movie_service->create($data);
-         
-        Movie::addAllToIndex();
 
-    
+        $movie = $this->movie_service->create($data);
+
+        Movie::addAllToIndex();
+        
+        
     	Mail::to('a0e81d5f81-52b522@inbox.mailtrap.io')->send(new MovieMail($movie));
     
 

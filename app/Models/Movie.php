@@ -61,7 +61,7 @@ class Movie extends Model
     }
 
     public static function getMoviesWithLikesAndDislikes(){
-        return self::with('genre','likes','dislikes','watchlists')->get();
+        return self::orderBy('created_at','desc')->with('genre','likes','dislikes','watchlists')->get();
     }
 
     public static function getMovieById($movie){

@@ -20,7 +20,7 @@ class Comment extends Model
     }
 
     public static function getCommentsWithPagination($movieId,$per_page){
-        return self::where(['movie_id' => $movieId])->paginate($per_page);
+        return self::orderBy('created_at','desc')->where(['movie_id' => $movieId])->paginate($per_page);
     }
 
     public static function getComments($movieId){
