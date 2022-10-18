@@ -1,5 +1,8 @@
 <?php
 
+use App\Events\NewTrade;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +18,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+// Route::get('/playground',function(){
+//     try{
+//         event(new NewTrade());
+
+//     }catch(Exception $e){
+//         dd($e->getMessage());
+//     }
+
+//     return null;
+// });
+
+Route::get('/trigger/{data}', function ($data) {
+    echo "<p>You have sent $data</p>";
+    event(new App\Events\NewTrade($data));
 });

@@ -142,10 +142,8 @@ class MovieController extends Controller
 
             $newMovies[] = Movie::getMovie($movie);
             
-
-        
-            
         }
+        
         $count = $movies->count();
 
 

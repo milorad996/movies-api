@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\NewTrade;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DislikeController;
@@ -54,3 +55,18 @@ Route::post('/lists-movies/{id}',[WatchListController::class,'addToWatchList']);
 Route::delete('/lists-remove/{id}',[WatchListController::class,'removeFromWatchlist']);
 
 Route::get('/elastic-search',[MovieController::class,'elasticSearch']);
+
+Route::get('/playground',function(){
+    try{
+        event(new NewTrade());
+
+    }catch(Exception $e){
+        dd($e->getMessage());
+    }
+
+    return null;
+});
+
+
+
+
