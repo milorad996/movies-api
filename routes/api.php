@@ -56,16 +56,7 @@ Route::delete('/lists-remove/{id}',[WatchListController::class,'removeFromWatchl
 
 Route::get('/elastic-search',[MovieController::class,'elasticSearch']);
 
-Route::get('/playground',function(){
-    try{
-        event(new NewTrade());
 
-    }catch(Exception $e){
-        dd($e->getMessage());
-    }
-
-    return null;
-});
 
 
 
