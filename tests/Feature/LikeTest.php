@@ -28,16 +28,16 @@ class LikeTest extends TestCase
     
        
     
-      $response = $this->postJson('/api/movies/15/likes',[
+      $response = $this->postJson('/api/movies/3/likes',[
         "likes" => [
             "like" => 1
         ]
       ]);
       $id = Auth::user()->id;
 
-      $like = Like::with('user','movie')->where(['user_id' => $id, 'movie_id' => 15,'like' => true])->get();
+      $like = Like::with('user','movie')->where(['user_id' => $id, 'movie_id' => 3,'like' => true])->get();
       
-     //dd($like->isEmpty());
+    
       if($like->isEmpty()){
         throw new Error("You have already liked");
       }

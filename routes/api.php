@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DislikeController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\WatchListController;
@@ -56,6 +57,8 @@ Route::delete('/lists-remove/{id}',[WatchListController::class,'removeFromWatchl
 
 Route::get('/elastic-search',[MovieController::class,'elasticSearch']);
 
+
+Route::post('/upload-image',[ImageController::class,'store']);
 
 
 

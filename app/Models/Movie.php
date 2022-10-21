@@ -53,6 +53,9 @@ class Movie extends Model
     public function watchlists(){
         return $this->hasMany(WatchList::class);
     }
+    public function image(){
+        return $this->belongsTo(Image::class);
+    }
 
     public static function filterByGenre($filterTerm){
         return self::with('genre','likes','dislikes','watchlists')->whereHas('genre', function ($genre) use ($filterTerm) {

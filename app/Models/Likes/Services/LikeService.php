@@ -26,16 +26,18 @@ class LikeService {
         $newLike->like = $data['likes']['like'];
         $newLike->user_id = Auth::user()->id;
         $newLike->movie_id = $movieId;
-        var_dump($newLike);
+        
         $like = Like::getLikes($userId,$movieId)->get();
-        $likes = Like::getLikes($userId,$movieId);
+    
         if($like->isEmpty()){
             $newLike->save();
 
         }else{
-            $likes->delete();
+            Like::getLikes($userId,$movieId)->delete();
         }
         
+        
+
         
         
 
